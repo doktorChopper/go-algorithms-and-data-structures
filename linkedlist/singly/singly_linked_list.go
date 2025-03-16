@@ -68,6 +68,7 @@ func (l *SinglyLinkedList) DeleteAtFront() {
     if !l.IsEmpty() {
         l.head = l.head.next
     }
+    l.size--
 }
 
 func (l *SinglyLinkedList) DeleteAtBack() {
@@ -79,6 +80,7 @@ func (l *SinglyLinkedList) DeleteAtBack() {
     }
 
     curr.next = nil
+    l.size--
 }
 
 func (l *SinglyLinkedList) Find(v int) (*node, bool) {
