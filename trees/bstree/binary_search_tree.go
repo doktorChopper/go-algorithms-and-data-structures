@@ -91,3 +91,56 @@ func (b *BinarySearchTree) Min() *node {
 
     return curr
 }
+
+func (b *BinarySearchTree) Delete(v int) {
+
+    curr := b.root
+    var del *node
+    var parent *node
+
+    for curr != nil {
+        parent = del
+        del = curr
+        if v > curr.data {
+            curr = curr.right
+        } else if v < curr.data {
+            curr = curr.left
+        } else {
+            break
+        }
+    }
+
+    if del.left == nil || del.right == nil {
+        if del == parent.left {
+            if del.left != nil {
+                parent.left = del.left
+            } else {
+                parent.left = del.right
+            }
+        } else {
+            if del.left != nil {
+                parent.right = del.left
+            } else {
+                parent.right = del.right
+            }
+        }
+    } else {
+
+        minRight := del.right
+        var parentMinRight *node
+
+        for minRight.left != nil {
+            parentMinRight = minRight
+            minRight = minRight.left
+        } 
+
+        if parentMinRight != nil {
+            parentMinRight.left = minRight.right
+        } else {
+            del.right = minRight.right
+        }
+
+        del.data = minRight.data
+
+    }
+}
