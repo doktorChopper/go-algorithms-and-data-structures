@@ -16,6 +16,7 @@ type SinglyLinkedList struct {
 func NewSinglyLinkedList() *SinglyLinkedList {
     return &SinglyLinkedList{
         head: nil,
+        size: 0,
     }
 }
 

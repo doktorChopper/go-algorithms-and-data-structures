@@ -16,6 +16,7 @@ func NewDoublyLinkedList() *DoublyLinkedList {
     return &DoublyLinkedList{
         head: nil,
         tail: nil,
+        size: 0,
     }
 }
 
