@@ -127,3 +127,41 @@ func (l *SinglyLinkedList) Reverse() {
     l.head = prev
 }
 
+func (l *SinglyLinkedList) RemoveDuplicates() {
+
+    curr := l.head
+
+    for curr != nil && curr.next != nil {
+        if curr.data == curr.next.data {
+            curr.next = curr.next.next
+        } else {
+            curr = curr.next
+        }
+    }
+}
+
+func MergeTwoLists(l1 *SinglyLinkedList, l2 *SinglyLinkedList) *SinglyLinkedList {
+
+    curr1 := l1.head
+    curr2 := l2.head
+
+    Merge := NewSinglyLinkedList()
+    Merge.InsertAtFront(0)
+
+    curr := Merge.head
+
+    for curr1 != nil && curr2 != nil {
+        if curr2.data <= curr1.data {
+            curr.next = curr2
+            curr2 = curr2.next
+        } else {
+            curr.next = curr1
+            curr1 = curr1.next
+        }
+
+        curr = curr.next
+    }
+
+    return Merge
+}
+
