@@ -1,4 +1,4 @@
-package trees
+package bstree
 
 type node struct {
     data    int
@@ -141,6 +141,5 @@ func (b *BinarySearchTree) Delete(v int) {
         }
 
         del.data = minRight.data
-
     }
 }
