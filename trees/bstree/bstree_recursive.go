@@ -79,7 +79,7 @@ func maxHelper(root *node) *node {
 }
 
 func (b *BinarySearchTreeRecursion) Delete(v int) {
- 
+    b.root = deleteHelper(v, b.root) 
 }
 
 func deleteHelper(v int, root *node) *node {

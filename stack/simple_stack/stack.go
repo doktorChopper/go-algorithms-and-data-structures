@@ -33,6 +33,10 @@ func (s *Stack) Push(v int) {
 }
 
 func (s *Stack) Pop() *node {
+    
+    if s.IsEmpty() {
+        return nil
+    }
 
     ret := s.top
     s.top = s.top.next
