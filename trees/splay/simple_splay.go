@@ -76,7 +76,7 @@ func (s *SplayTree) splay(n *node) *node {
                 s.zig(n.parent.parent)
                 s.zig(n.parent)
             } else {
-                s.zig(n.parent.parent)
+                s.zig(n.parent)
                 s.zag(n.parent)
             }
         } else {
@@ -86,13 +86,46 @@ func (s *SplayTree) splay(n *node) *node {
                 s.zag(n.parent.parent)
                 s.zag(n.parent)
             } else {
-                s.zag(n.parent.parent)
+                s.zag(n.parent)
                 s.zig(n.parent)
             }
         }
     }
 
     return n
+}
+
+func (s *SplayTree) Delete(v int) bool {
+
+    del, flag := s.Search(v)
+
+    if !flag {
+        return false
+    }
+
+    if del.left != nil {
+        del.left.parent = nil
+    }
+    s.root = s.splay(findMax(del.left))
+    s.root.right = del.right
+
+    if del.right != nil {
+        del.right.parent = s.root
+    }
+    return true
+}
+
+func (s *SplayTree) Max() *node {
+    return findMax(s.root)
+}
+
+func findMax(root *node) *node {
+
+    for root.right != nil {
+        root = root.right
+    }
+
+    return root
 }
 
 func (s *SplayTree) Add(v int) {
@@ -135,17 +168,20 @@ func (s *SplayTree) Add(v int) {
 func (s *SplayTree) Search(v int) (*node, bool) {
 
     curr := s.root
+    var prev *node
 
     for curr != nil {
+        prev = curr
         if v < curr.data {
             curr = curr.left
         } else if v > curr.data {
             curr = curr.right
-        } else {
+        } else if v == curr.data {
             return s.splay(curr), true
         }
     }
 
+    s.splay(prev)
     return nil, false
 }
 
