@@ -6,6 +6,10 @@ type node struct {
     next *node
 }
 
+func (n *node) Data() int {
+    return n.data
+}
+
 type Queue struct {
     head *node
     tail *node

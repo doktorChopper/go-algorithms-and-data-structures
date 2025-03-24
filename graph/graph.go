@@ -94,16 +94,94 @@ func (g *Graph) BFS(s int) {
                 q.enqueue(edge.vertex)
             }
         }
+
         u.color = 'b'
     }
 
     fmt.Println()
+}
 
+func (g *Graph) DFS(s int) {
+
+    for _, v := range g.vertices {
+        v.color = 'w'
+    }
+
+    g.vertices[s].color = 'g'
+
+    g.dfsHelper(s)
+
+    for k, v := range g.vertices {
+        if v.color == 'w' {
+            g.dfsHelper(k)
+        }
+    }
+
+}
+
+func (g *Graph) dfsHelper(s int) {
+
+    st := newStackDFS()
+    st.push(g.vertices[s])
+
+    for !st.isEmpty() {
+
+        u := st.pop().data
+        fmt.Printf("%d ", u.data)
+
+        u.color = 'b'
+
+        for _, edge := range u.edges {
+            if edge.vertex.color == 'w' {
+                if edge.vertex == u {
+                    continue
+                }
+                edge.vertex.color = 'g'
+                st.push(edge.vertex)
+            }
+        }
+
+    }
 }
 
 type node struct {
     data *vertex
     next *node
+}
+
+type stackDFS struct {
+    top *node
+}
+
+func newStackDFS() *stackDFS {
+    return &stackDFS {
+        top: nil,
+    }
+}
+
+func (s *stackDFS) isEmpty() bool {
+    return s.top == nil
+}
+
+func (s *stackDFS) push(v *vertex) {
+    n := &node {
+        data: v,
+        next: s.top,
+    }
+
+    s.top = n
+}
+
+func (s *stackDFS) pop() *node {
+
+    if s.isEmpty() {
+        return nil
+    }
+
+    ret := s.top
+
+    s.top = s.top.next
+    return ret
 }
 
 type queueBFS struct {
