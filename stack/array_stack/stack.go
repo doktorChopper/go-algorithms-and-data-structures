@@ -31,7 +31,7 @@ func (s *Stack) Push(v int) {
 
 func (s *Stack) Pop() (int, error) {
 
-    if s.IsEmpty() {
+    if s.top == 0 {
         return -1, ErrStackUnderflow 
     }
 

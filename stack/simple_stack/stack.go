@@ -32,13 +32,13 @@ func (s *Stack) Push(v int) {
     s.top = n
 }
 
-func (s *Stack) Pop() *node {
+func (s *Stack) Pop() (*node, bool) {
     
-    if s.IsEmpty() {
-        return nil
+    if s.top == nil {
+        return nil, false
     }
 
     ret := s.top
     s.top = s.top.next
-    return ret
+    return ret, true
 }
