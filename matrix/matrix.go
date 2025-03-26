@@ -100,6 +100,39 @@ func (m *Matrix) ScalarDiv(v float64) {
     }
 }
 
+func (m *Matrix) Sub(o *Matrix) *Matrix {
+    
+    if m.cols != o.cols && m.rows != o.rows {
+        return nil
+    }
+
+    ret := NewMatrixNM(m.rows, m.cols)
+
+    for i := 0; i < m.rows; i++ {
+        for j := 0; j < m.cols; j++ {
+            ret.mat[i][j] = m.mat[i][j] - o.mat[i][j]
+        }
+    }
+
+    return ret
+}
+
+func (m *Matrix) Add(o *Matrix) *Matrix {
+    if m.cols != o.cols && m.rows != o.rows {
+        return nil
+    }
+
+    ret := NewMatrixNM(m.rows, m.cols)
+
+    for i := 0; i < m.rows; i++ {
+        for j := 0; j < m.cols; j++ {
+            ret.mat[i][j] = m.mat[i][j] + m.mat[i][j]
+        }
+    }
+
+    return ret
+}
+
 func (m *Matrix) Mult(o *Matrix) *Matrix {
 
     if m.cols != o.rows {
