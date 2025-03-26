@@ -39,16 +39,87 @@ func NewMatrixFromSlice(s [][]float64) *Matrix {
     }
 }
 
+func (m *Matrix) Cols() int {
+    return m.cols
+}
+
+func (m *Matrix) Rows() int {
+    return m.rows
+}
+
 func (m *Matrix) Transposition() *Matrix {
 
-    mT := make([][]float64, m.rows)
-    for i := range mT {
-        mT[i] = make([]float64, m.cols)
+    mT := NewMatrixNM(m.cols, m.rows)
+
+    for i := 0; i < m.rows; i++ {
+        for j := 0; j < m.cols; j++ {
+            mT.mat[j][i] = m.mat[i][j]
+        }
     }
 
-    // TODO
-    return nil
+    return mT
 }
+
+func (m *Matrix) Minor(row, col int) *Matrix {
+    ret := NewMatrixNM(m.rows - 1, m.cols - 1)
+
+    r := 0
+    for i := 0; i < m.rows; i++ {
+        if i == row {
+            continue
+        }
+        c := 0
+        for j := 0; j < m.cols; j++ {
+            if j == col {
+                continue
+            }
+            ret.mat[r][c] = m.mat[i][j]
+            c++
+        }
+        r++
+    }
+
+    return ret
+}
+
+func (m *Matrix) ScalarMult(v float64) {
+
+    for i := 0; i < m.rows; i++ {
+        for j := 0; j < m.cols; j++ {
+            m.mat[i][j] *= v
+        }
+    }
+}
+
+func (m *Matrix) ScalarDiv(v float64) {
+
+    for i := 0; i < m.rows; i++ {
+        for j := 0; j < m.cols; j++ {
+            m.mat[i][j] /= v
+        }
+    }
+}
+
+func (m *Matrix) Mult(o *Matrix) *Matrix {
+
+    if m.cols != o.rows {
+        return nil
+    }
+    
+    ret := NewMatrixNM(m.rows, o.cols)
+
+    for i := 0; i < m.rows; i++ {
+        for j := 0; j < o.cols; j++ {
+            s := 0.0
+            for k := 0; k < o.rows; k++ {
+                s += m.mat[i][k] * o.mat[k][j]
+            }
+            ret.mat[i][j] = s
+        }
+    }
+    return ret
+}
+
 
 func (m *Matrix) Display() {
 
@@ -62,3 +133,4 @@ func (m *Matrix) Display() {
 
     fmt.Println()
 }
+
