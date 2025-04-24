@@ -1,6 +1,9 @@
 package threadsafe
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type node struct {
     data    int
@@ -22,16 +25,20 @@ func NewThreadSafeStack() *ThreadSafeStack {
 func (s *ThreadSafeStack) IsEmpty() bool {
     
     s.mu.RLock()
-    defer s.mu.Unlock()
+    defer s.mu.RUnlock()
 
     return s.top == nil 
 }
 
-func (s *ThreadSafeStack) Top() int {
+func (s *ThreadSafeStack) Top() (int, bool) {
     s.mu.RLock()
-    defer s.mu.Unlock()
+    defer s.mu.RUnlock()
 
-    return s.top.data
+    if s.top == nil {
+        return -1, false
+    }
+
+    return s.top.data, true
 }
 
 func (s *ThreadSafeStack) Push(v int) {
@@ -60,4 +67,16 @@ func (s *ThreadSafeStack) Pop() (*node, bool) {
     s.top = s.top.next
 
     return ret, true
+}
+
+func (s *ThreadSafeStack) Display() {
+    s.mu.RLock()
+    defer s.mu.RUnlock()
+
+    curr := s.top
+    for curr != nil {
+        fmt.Println(curr.data)
+        curr = curr.next
+    }
+    fmt.Println()
 }
